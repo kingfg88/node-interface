@@ -28,7 +28,7 @@ res.status(200);
 
 // 创建 application/x-www-form-urlencoded 编码解析  
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-//写个登录接口
+//登录接口
 app.post('/login',urlencodedParser,function(req,res){
 	res.status(200);
   data = {  
