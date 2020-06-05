@@ -21,44 +21,12 @@ conn.connect();
 // });
 
 // jwt生成token
-var {PRIVITE_KEY,EXPIRESD} = require("./utils/sotre")
+var {PRIVITE_KEY,EXPIRESD} = require("../utils/sotre")
 const jwt = require("jsonwebtoken");
-const expressJWT = require('express-jwt');
-
-//使用此方法拦截所有请求看token是否正确（此方法写在静态资源加载之后，不然静态资源不能访问）
-app.use(expressJWT({
-　　secret: PRIVITE_KEY
-}).unless({
-　　path: ['/register','/login'] //白名单,除了了这里里写的地址，其他的URL都需要验证
-}));
-
-app.use(function (err, req, res, next) {
-    let token = req.headers.token
-    if(token){
-      jwt.verify(token, PRIVITE_KEY, (err, val) => {
-        if(err) return
-        let selectSQL = "SELECT * FROM USER WHERE username='"+val.username+"'"
-        conn.query(selectSQL,function(err, data) {
-          if(err) throw err;
-          res.status(200);
-          if(data[0].username==val.username){
-            res.json({
-              code:0,
-              data:{
-                username:data[0].username
-              },
-              msg:'获取用户信息！'
-            })
-          }
-        })
-      })
-    }
-});
 //用户信息接口info
 app.get('/userInfo',function(req,res){
-  res.json({
-    code:0
-  })
+  res.status(200);
+
 });
 
 //登录接口
@@ -87,7 +55,7 @@ app.post('/login',bodyParser.json(),function(req,res){
     }else{
       res.json({
         code:1,
-        msg:'用户不存在！'
+        msg:'用户名不存在！'
       })
     }
   })
