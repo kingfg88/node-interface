@@ -1,0 +1,41 @@
+Arguments: 
+  D:\tools\Nodist\v-x64\12.13.0\node.exe D:\tools\Nodist\bin\node_modules\yarn\bin\yarn.js add body-parser
+
+PATH: 
+  D:\Apache\apache-maven-3.6.2\bin;C:\Program Files\Java\jdk1.8.0_201\jre\bin;C:\Program Files (x86)\Inno Setup 5;C:\Program Files (x86)\WiX Toolset v3.11\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files\Java\jdk1.8.0_20\bin;C:\Program Files\Java\jdk1.8.0_20\jre\bin;C:\Program Files\TortoiseSVN\bin;D:\Software\Microsoft VS Code\bin;D:\Software\Microsoft VS Code\bin;C:\Program Files\nodejs;D:\Software\Microsoft VS Code\bin;nvm use 4.4.0;C:\Program Files\nodejs;D:\Software\Microsoft VS Code\bin;nvm use 4.4.0;C:\Program Files\nodejs;D:\Software\M;D:\Program Files (x86)\Python;D:\Program Files (x86)\Python27;D:\tools\Nodist\bin;D:\Program Files\Git\cmd;D:\Program Files (x86)\Python\Scripts\;D:\Program Files (x86)\Python\;D:\Program Files (x86)\Python27\Scripts\;D:\Program Files (x86)\Python27\;D:\Software\Microsoft VS Code\bin;;D:\Software\ssh
+
+Yarn version: 
+  1.19.1
+
+Node version: 
+  12.13.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EEXIST: file already exists, mkdir 'E:\node-interface\node_modules\http-errors'
+
+npm manifest: 
+  {
+    "dependencies": {
+      "express": "^4.17.1",
+      "mysql": "^2.18.1"
+    },
+    "name": "package.json",
+    "version": "1.0.0",
+    "main": "index.js",
+    "devDependencies": {},
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": ""
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

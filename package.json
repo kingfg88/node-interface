@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "express": "^4.16.2",
-    "mysql": "^2.15.0"
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
   },
   "name": "package.json",
   "version": "1.0.0",
