@@ -1,36 +1,15 @@
-var express=require('express');
-var bodyParser=require('body-parser');
 var app =express();
-var mysql = require('mysql');
-var conn = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'kingfg',
-    database:'TEST',
-    port: 3306
-});
-conn.connect();
-//设置跨域访问
-// app.all('*', function(req, res, next) {
-//    res.header("Access-Control-Allow-Origin", "*");
-//    res.header("Access-Control-Allow-Headers", "Content-Type,X-Requested-With");
-//    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-//    res.header("X-Powered-By",' 3.2.1');
-//    res.header("Content-Type", "application/json;charset=utf-8");
-//    next();
-// });
-
 // jwt生成token
-var {PRIVITE_KEY,EXPIRESD} = require("../utils/sotre")
+var {PRIVITE_KEY,EXPIRESD} = require("./utils/sotre")
 const jwt = require("jsonwebtoken");
+const expressJWT = require('express-jwt');
 //用户信息接口info
 app.get('/userInfo',function(req,res){
   res.status(200);
 
 });
-
 //登录接口
-app.post('/login',bodyParser.json(),function(req,res){
+app.post('/sys/login',bodyParser.json(),function(req,res){
   let username = req.body.username
   let password = req.body.password 
   let selectSQL = "SELECT * FROM USER WHERE username='"+username+"'"
@@ -90,9 +69,4 @@ app.post('/registe',bodyParser.json(),function(req,res){
   //   }
   // })
   
-})
-//配置服务端口
-var server = app.listen(3000, function () {
-var port = server.address().port;
-    console.log('Example app listening at http://127.0.0.1:', port);
 })
