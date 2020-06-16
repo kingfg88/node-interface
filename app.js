@@ -4,7 +4,7 @@ const bodyParser=require('body-parser');
 const app =express();
 
 const router = require('./router/index')
-
+//token引入
 const {PRIVITE_KEY} = require("./utils/sotre")
 const expressJWT = require('express-jwt');
 const validtoken = require("./utils/token")
@@ -35,7 +35,7 @@ app.use(function(err, req, res, next) {
       return res.status(401).send('token失效');
   }
 });
-//加载所需
+//中间件
 app.use(bodyParser.json())
 app.use(router)
 
