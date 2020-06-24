@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const db = require('../db')
+const fs = require('fs')
 // jwt生成token
 const token = require("../utils/token")
 
@@ -158,6 +159,33 @@ router.post('/editplayer',async(req,res)=>{
             msg:'编辑成功'
         })
     })
+})
+
+//读取文件并写入
+router.post('/upload',async(req,res)=>{
+    //接收前台POST过来的base64
+    var imgData = req.body.file;
+    //过滤data:URL
+    var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "");
+    // 返回一个被 string 的值初始化的新的 Buffer 实例,原始二进制数据存储在 Buffer 类的实例中，        一个 Buffer 类似于一个整数数组，但它对应于 V8 堆内存之外的一块原始内存。
+    var dataBuffer = Buffer.from(base64Data, 'base64');
+    let name_time = Date.now()
+    fs.writeFile(`./public/image/${name_time}.jpg`, dataBuffer, function(err) {
+        if(err){
+            res.json({
+                code:1,
+                msg:'上传失败！'
+            })
+        }else{
+            res.json({
+                code:0,
+                data:{
+                    name:`${name_time}.jpg`
+                },
+                msg:'上传成功！'
+            })
+        }
+    });
 })
 
 module.exports = router
