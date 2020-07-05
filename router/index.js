@@ -85,16 +85,29 @@ router.get('/userInfo',async(req,res)=>{
 router.post('/getplayer',async(req,res)=>{
     let page = req.body.page
     let size = req.body.size
-    let name = req.body.name
-    let club = req.body.club
-    var startTime,endTime
-    if(req.body.time){
-        startTime = time[0],
-        endTime = time[1]
-    }
     let start = (page - 1) * size;
-    let sqll = `SELECT * FROM PLAYER WHERE (name LIKE '%${name}%' OR '%${name}%'='') AND (club LIKE '%${club}%' OR '%${club}%'='') AND (time BETWEEN '${startTime}' AND '${endTime}' OR '${startTime}' = '' OR '${endTime}'='')`
-    let sql = `SELECT * FROM PLAYER ORDER BY tid DESC LIMIT ${start},${size}`
+
+    let name = req.body.name
+    let club = req.body.club.replace(/\s+/g,"");
+    let startTime = req.body.time[0]
+    let endtTime = req.body.time[1]
+    let sqlq = 'SELECT * FROM PLAYER WHERE'
+    if(name == ''){
+        sqlq+= sqlq
+    }else{
+        sqlq+= ` name='${name}'`
+    }
+    if(club == ''){
+        sqlq = sqlq
+    }else{
+        sqlq+=` AND club ='${club}'`
+    }
+    if(req.body.time){
+        sqlq+=` AND time BETWEEN '${startTime}' AND '${endtTime}'`
+    }else{
+        sqlq+= sqlq
+    }
+    let sql = sqlq+` ORDER BY tid DESC LIMIT ${start},${size}`
     let selectSQL = `SELECT * FROM  PLAYER`
     let total = 0
     db.query(selectSQL,(err,data)=>{
