@@ -86,29 +86,27 @@ router.post('/getplayer',async(req,res)=>{
     let page = req.body.page
     let size = req.body.size
     let start = (page - 1) * size;
-
-    let name = req.body.name
-    let club = req.body.club.replace(/\s+/g,"");
-    let startTime = req.body.time[0]
-    let endtTime = req.body.time[1]
-    let sqlq = 'SELECT * FROM PLAYER WHERE'
-    if(name == ''){
-        sqlq+= sqlq
+    
+    let selectSQL = ''
+    if(req.body.name || req.body.club || req.body.time){
+        selectSQL = 'SELECT * FROM PLAYER WHERE'
     }else{
-        sqlq+= ` name='${name}'`
+        selectSQL = 'SELECT * FROM PLAYER'
     }
-    if(club == ''){
-        sqlq = sqlq
-    }else{
-        sqlq+=` AND club ='${club}'`
+    if(req.body.name){
+        selectSQL+= ` name REGEXP '${req.body.name}'`
     }
-    if(req.body.time){
-        sqlq+=` AND time BETWEEN '${startTime}' AND '${endtTime}'`
-    }else{
-        sqlq+= sqlq
+    if(req.body.name&&req.body.club){
+        selectSQL+=` AND club REGEXP '${req.body.club}'`
+    }else if(req.body.club){
+        selectSQL+=` club REGEXP '${req.body.club}'`
     }
-    let sql = sqlq+` ORDER BY tid DESC LIMIT ${start},${size}`
-    let selectSQL = `SELECT * FROM  PLAYER`
+    if((req.body.name || req.body.club) && req.body.time){
+        selectSQL+=` AND time BETWEEN '${req.body.time[0]}' AND '${req.body.time[1]}'`
+    }else if(req.body.time){
+        selectSQL+=` time BETWEEN '${req.body.time[0]}' AND '${req.body.time[1]}'`
+    }
+    let sql = selectSQL+` ORDER BY tid DESC LIMIT ${start},${size}`
     let total = 0
     db.query(selectSQL,(err,data)=>{
         if(err) throw err;
@@ -121,6 +119,11 @@ router.post('/getplayer',async(req,res)=>{
                     data:data,
                     total:total,
                     msg:'获取列表成功'
+                })
+            }else{
+                res.json({
+                    code:0,
+                    msg:'查无此人！'
                 })
             }
         })
