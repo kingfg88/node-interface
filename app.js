@@ -3,6 +3,7 @@ const express=require('express');
 const bodyParser=require('body-parser');
 const app =express();
 var path = require('path');
+// 引入router模块
 const router = require('./router/index')
 //token引入
 const {PRIVITE_KEY} = require("./utils/sotre")
@@ -15,19 +16,21 @@ app.use(expressJWT({
   secret: PRIVITE_KEY,
   // credentialsRequired: false,
   // getToken: function fromHeaderOrQuerystring (req) {
-  //   if(req.originalUrl.indexOf('/getplayer')){
-  //     console.log(123)
-  //     return null
-  //   }
-    // if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    //   return req.headers.authorization.split(' ')[1]
-    // } else if (req.query && req.query.token) {
-    //   return req.query.token
+    // if(req.originalUrl.indexOf('/public') != -1){
+    //   console.log(123)
+    //   return null
     // }
-    // return null
+    // if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    //   return req.headers.authorization.split(' ')[1];
+    // } else if (req.query && req.query.token) {
+    //     return req.query.token;
+    // } else if (req.body && req.body.token) {
+    //     return req.body.token;
+    // }
+    // return null;
   // }
 }).unless({
-　　path: ['/registe','/login'] //白名单,除了了这里里写的地址，其他的URL都需要验证
+　　path: ['/user/registe','/user/login'] //白名单,除了了这里里写的地址，其他的URL都需要验证
 }));
 // 解析token并获取用户信息
 app.use(function(req, res, next) {
@@ -46,7 +49,12 @@ app.use(function(req, res, next) {
 //当token失效返回提示信息
 app.use(function(err, req, res, next) {
   if (err.status == 401) {
-      return res.status(401).send(err.message);
+      // return res.status(401).send(err.message);
+      res.status(401);
+      res.json({
+        code:-1,
+        msg:err.message
+    })
   }
 });
 //使用中间件
