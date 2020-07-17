@@ -84,6 +84,7 @@ router.post('/editArticle',async(req,res)=>{
 	let content = req.body.content
 	let modifier = req.body.modifier
 	let updatetime = (new Date()).getTime()
+	console.log(new Date())
 	let SQL = `UPDATE ARTICLE SET name = '${name}',content = '${content}',modifier = '${modifier}',updatetime = '${updatetime}' WHERE id = ${id}`
 	db.query(SQL,err => {
 		if(err) throw err
@@ -108,7 +109,7 @@ router.post('/detailArticle',async(req,res)=>{
 })
 //导入文章
 router.post('/importArticle',async(req,res)=>{
-	console.log(req,body)
+	console.log(req.body)
 	var ExcleData = req.body;
 	res.json({
 		code:0,

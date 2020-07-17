@@ -10,25 +10,11 @@ const {PRIVITE_KEY} = require("./utils/sotre")
 const expressJWT = require('express-jwt');
 const validtoken = require("./utils/token")
 //访问静态资源目录
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 //使用此方法拦截所有请求看token是否正确（此方法写在静态资源加载之后，不然静态资源不能访问）
 app.use(expressJWT({
   secret: PRIVITE_KEY,
   // credentialsRequired: false,
-  // getToken: function fromHeaderOrQuerystring (req) {
-    // if(req.originalUrl.indexOf('/public') != -1){
-    //   console.log(123)
-    //   return null
-    // }
-    // if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    //   return req.headers.authorization.split(' ')[1];
-    // } else if (req.query && req.query.token) {
-    //     return req.query.token;
-    // } else if (req.body && req.body.token) {
-    //     return req.body.token;
-    // }
-    // return null;
-  // }
 }).unless({
 　　path: ['/user/registe','/user/login'] //白名单,除了了这里里写的地址，其他的URL都需要验证
 }));

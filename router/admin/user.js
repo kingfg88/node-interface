@@ -80,14 +80,15 @@ router.get('/userInfo',async(req,res)=>{
         }
     })
 })
-//读取文件并写入
+//上传头像
 router.post('/upload',async(req,res)=>{
+    let uid = req.body.uid
     //接收前台POST过来的base64
-    var imgData = req.body.file;
+    let imgData = req.body.file;
     //过滤data:URL
-    var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "");
+    let base64Data = imgData.replace(/^data:image\/\w+;base64,/, "");
     // 返回一个被 string 的值初始化的新的 Buffer 实例,原始二进制数据存储在 Buffer 类的实例中，        一个 Buffer 类似于一个整数数组，但它对应于 V8 堆内存之外的一块原始内存。
-    var dataBuffer = Buffer.from(base64Data, 'base64');
+    let dataBuffer = Buffer.from(base64Data, 'base64');
     let name_time = Date.now()
     fs.writeFile(`./public/image/${name_time}.jpg`, dataBuffer, function(err) {
         if(err){
@@ -96,15 +97,47 @@ router.post('/upload',async(req,res)=>{
                 msg:'上传失败！'
             })
         }else{
-            res.json({
-                code:0,
-                data:{
-                    name:`${name_time}.jpg`
-                },
-                msg:'上传成功！'
+            let SQL = `UPDATE USER SET headportrait = '${name_time}.jpg' WHERE uid = ${uid}`
+            db.query(SQL,(err,data)=>{
+                if(err) throw err
+                res.json({
+                    code:0,
+                    data:{name:`${name_time}.jpg`},
+                    msg:'更换成功！'
+                })
             })
         }
     });
+})
+//修改个人信息
+router.post('/editInformation',async(req,res)=>{
+    let uid = req.body.uid
+    let realname = req.body.realname
+    let password = req.body.password
+    let newpword = req.body.newpword
+    if(req.body.password){
+        let selectSQL = `SELECT * FROM USER WHERE uid =' ${uid}'`
+        db.query(selectSQL,(err,data)=>{
+            if(err) throw err
+            if(data[0].password == password){
+                var SQL = `UPDATE USER SET password = '${newpword}',realname = '${realname}' WHERE uid =' ${uid}'`
+                db.query(SQL,(err,data)=>{
+                    if(err) throw err
+                    res.json({
+                        code:0,
+                        msg:'修改成功！'
+                    })
+                })
+            }else{
+                res.json({
+                    code:-1,
+                    msg:'原密码错误,请重试'
+                })
+            }
+        })
+    }else{
+        
+    }
 })
 
 module.exports = router
