@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80020
 File Encoding         : 65001
 
-Date: 2020-07-17 18:04:21
+Date: 2020-07-23 19:08:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -96,14 +96,15 @@ CREATE TABLE `person` (
   `role` varchar(255) DEFAULT NULL,
   `addperson` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- ----------------------------
 -- Records of person
 -- ----------------------------
 INSERT INTO `person` VALUES ('2', '1594976492032', '合法但是', '编辑员', '萨拉赫');
 INSERT INTO `person` VALUES ('3', '1594976676086', '引发的', '副管理员', '萨拉赫');
-INSERT INTO `person` VALUES ('4', '1594976721583', '分公司的的', '编辑员', '萨拉赫');
+INSERT INTO `person` VALUES ('4', '1594976721583', '分公司的的', '副管理员', '管理员');
+INSERT INTO `person` VALUES ('5', '1595293664030', '范德萨', '编辑员', '管理员');
 
 -- ----------------------------
 -- Table structure for player
@@ -180,7 +181,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', 'f6e0a1e2ac41945a9aa7ff8a8aaa0cebc12a3bcc981a929ad5cf810a090e11ae', '管理员', '1594865668485.jpg');
+INSERT INTO `user` VALUES ('1', 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', '管理员', '1595295521340.jpg');
 INSERT INTO `user` VALUES ('3', 'kingfg', '6b8ca7e0f01ef412984c19e57eae51ca85ad7288ca35feeef0cad4c23953f6c9', null, null);
 INSERT INTO `user` VALUES ('4', 'king555', '9b871512327c09ce91dd649b3f96a63b7408ef267c8cc5710114e629730cb61f', null, null);
 INSERT INTO `user` VALUES ('5', 'king333', '556d7dc3a115356350f1f9910b1af1ab0e312d4b3e4fc788d2da63668f36d017', '萨拉赫', '1594710811295.jpg');

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router()
 
-
 const fileupload = require("./admin/upload");
 const user = require("./admin/user");
 const player = require("./admin/player");

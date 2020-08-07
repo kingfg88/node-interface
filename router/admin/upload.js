@@ -3,15 +3,32 @@ const router = express.Router()
 const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs')
-const ffmpeg = require('ffmpeg')
-const child = require('child_process')
+const ffmpeg = require('fluent-ffmpeg')
+// const child = require('child_process')
 
-function interception(filename){
-    let optionStr = `ffmpeg -y -i ${filename} -ss 00:01:24 -t 00:00:01 output_%3d.jpg`
-    console.log(optionStr)
-    child.exec(optionStr, function (err,data) {
-        if(err) throw err
-        console.log(data)
+const captureImageOne = (src)=> {
+    return new Promise((reslove, reject) => {
+        try {
+            let imageName = '';
+            let fileName = src.substring(src.lastIndexOf('/') + 1).split(".")[0];
+            ffmpeg(src)
+                .on('filenames', (filenames)=> {
+                    imageName = filenames[0];
+                    console.log(imageName,666);
+                })
+                .on('end', ()=> {
+                    reslove(imageName);
+                })
+                .screenshots({
+                    // Will take screens at 20%, 40%, 60% and 80% of the video
+                    //timestamps: [30.5, '50%', '01:10.123'],
+                    timestamps: ['00:01.000'],
+                    folder: './public/image',
+                    filename: fileName + '.png',
+                });
+        } catch(err) {
+            reject(err);
+        }
     })
 }
 router.post('/upload',async(req,res)=>{
@@ -31,7 +48,7 @@ router.post('/upload',async(req,res)=>{
         if(`${type}` == 'mp4'){
             newPath = path.join(__dirname,'../../public/video/')+avatarName
             fs.renameSync(files.file.path, newPath);  //重命名
-            // interception(newPath)
+            captureImageOne(newPath)
         }else if(`${type}` == 'ogg' || `${type}` == 'mp3' || `${type}` == 'wav'){
             newPath = path.join(__dirname,'../../public/audio/')+avatarName
             fs.renameSync(files.file.path, newPath);  //重命名

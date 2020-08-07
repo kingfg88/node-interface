@@ -2,7 +2,6 @@
 const express=require('express');
 const bodyParser=require('body-parser');
 const app =express();
-var path = require('path');
 // 引入router模块
 const router = require('./router/index')
 //token引入
@@ -10,7 +9,7 @@ const {PRIVITE_KEY} = require("./utils/sotre")
 const expressJWT = require('express-jwt');
 const validtoken = require("./utils/token")
 //访问静态资源目录
-app.use(express.static(__dirname));
+app.use(express.static('public'));
 //使用此方法拦截所有请求看token是否正确（此方法写在静态资源加载之后，不然静态资源不能访问）
 app.use(expressJWT({
   secret: PRIVITE_KEY,
@@ -34,8 +33,8 @@ app.use(function(req, res, next) {
 });
 //当token失效返回提示信息
 app.use(function(err, req, res, next) {
+  console.log(err.status)
   if (err.status == 401) {
-      // return res.status(401).send(err.message);
       res.status(401);
       res.json({
         code:-1,
@@ -48,7 +47,7 @@ app.use(bodyParser.json())
 app.use(router)
 
 //配置服务端口
-var server = app.listen(3000, (req,res) => {
+app.listen(3000, (req,res) => {
   const hostname = '127.0.0.1';
   const port = 3000;
   console.log(`Server running at http://${hostname}:${port}`);
